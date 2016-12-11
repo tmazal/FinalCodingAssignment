@@ -7,11 +7,22 @@ import rocket.app.MainApp;
 import rocketCode.Action;
 import rocketData.LoanRequest;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 public class MortgageController {
 
 	private MainApp mainApp;
 	
-	//	TODO - RocketClient.RocketMainController
+	//	DONE - RocketClient.RocketMainController
 	
 	//	Create private instance variables for:
 	//		TextBox  - 	txtIncome
@@ -22,39 +33,118 @@ public class MortgageController {
 	//		Labels   -  various labels for the controls
 	//		Button   -  button to calculate the loan payment
 	//		Label    -  to show error messages (exception throw, payment exception)
+	
+		@FXML
+		private TextField txtIncome;
+		
+		@FXML
+		private TextField txtExpenses;
+		
+		@FXML
+		private TextField txtCreditScore;
+		
+		@FXML
+		private TextField txtHouseCost;
+		
+		@FXML
+		private ComboBox cboxLoanTerm;
+
+		@FXML
+		private Label lblIncome;
+		
+		@FXML
+		private Label lblExpenses;
+		
+		@FXML
+		private Label lblCreditScore;
+		
+		@FXML
+		private Label lblHouseCost;
+		
+		@FXML
+		private Label lblPayment0;
+		
+		@FXML
+		private Label lblPayment;
+		
+		@FXML
+		private Label lblLoanTerm;
+		
+		@FXML
+		private Button calcButton;
+		
+		@FXML
+		private Label lblErrors0;
+		
+		@FXML
+		private Label lblErrors;
+
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
 	
+	@FXML
+	private void initialize() {
+		addCBItems();	  
+	}
 	
-	//	TODO - RocketClient.RocketMainController
+	public void addCBItems(){
+		  ObservableList<String> list = FXCollections.observableArrayList("1","2","3","4");
+		    ComboBox<String> cboxLoanTerm = new ComboBox<String>();
+		    cboxLoanTerm.setItems(list);
+		    cboxLoanTerm.setValue("A");
+	}
+	
+	//	DONE - RocketClient.RocketMainController
 	//			Call this when btnPayment is pressed, calculate the payment
+	
 	@FXML
 	public void btnCalculatePayment(ActionEvent event)
 	{
 		Object message = null;
-		//	TODO - RocketClient.RocketMainController
-		
 		Action a = new Action(eAction.CalculatePayment);
 		LoanRequest lq = new LoanRequest();
-		//	TODO - RocketClient.RocketMainController
+		//	DONE - RocketClient.RocketMainController
 		//			set the loan request details...  rate, term, amount, credit score, downpayment
 		//			I've created you an instance of lq...  execute the setters in lq
-
-		a.setLoanRequest(lq);
+		lq.setdIncome(Double.parseDouble(txtIncome.getText()));
+		lq.setdExpenses(Double.parseDouble(txtExpenses.getText()));
+		lq.setiCreditScore(Integer.parseInt(txtCreditScore.getText()));
+		lq.setdAmount(Double.parseDouble(txtHouseCost.getText()));
+		String output = cboxLoanTerm.getSelectionModel().getSelectedItem().toString();
+		lq.setiTerm(Integer.parseInt(output));
 		
+		a.setLoanRequest(lq);
 		//	send lq as a message to RocketHub		
 		mainApp.messageSend(lq);
 	}
 	
 	public void HandleLoanRequestDetails(LoanRequest lRequest)
 	{
-		//	TODO - RocketClient.HandleLoanRequestDetails
+		//	DONE - RocketClient.HandleLoanRequestDetails
 		//			lRequest is an instance of LoanRequest.
 		//			after it's returned back from the server, the payment (dPayment)
 		//			should be calculated.
 		//			Display dPayment on the form, rounded to two decimal places
+		
+		double PITI;
+		double calc1;
+		double calc2;
+		double roundPITI;
+		
+		calc1 = lRequest.getdIncome()*0.28;
+		calc2 = lRequest.getdIncome()*0.36 - lRequest.getdExpenses();
+		//if loop to see which calculation is lower for PITI
+		if (calc1 < calc2)
+			PITI = calc1;
+		else
+			PITI = calc2;
+		
+		roundPITI = (double) Math.round(PITI*100)/100;
+		lRequest.setdPayment(roundPITI);
+		
+		lblPayment.setText(String.valueOf(roundPITI));
 		
 	}
 }
