@@ -4,7 +4,7 @@
 <!-- Generated Nov 13, 2014 2:49:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
 	<class name="rocketDomain.RateDomainModel" table="tblRate">
-		<id name="iRateID" type="integer">
+		<id name="iRateID" type="integer" length = "9">
 			<column name="RateID" />
 		</id>
 		<property name="iMinCreditScore" type="integer">
