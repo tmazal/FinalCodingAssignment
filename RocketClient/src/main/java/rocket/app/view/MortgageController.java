@@ -86,14 +86,9 @@ public class MortgageController {
 	
 	@FXML
 	private void initialize() {
-		addCBItems();	  
-	}
-	
-	public void addCBItems(){
-		  ObservableList<String> list = FXCollections.observableArrayList("1","2","3","4");
-		    ComboBox<String> cboxLoanTerm = new ComboBox<String>();
-		    cboxLoanTerm.setItems(list);
-		    cboxLoanTerm.setValue("A");
+		cboxLoanTerm.getItems().removeAll(cboxLoanTerm.getItems());
+		cboxLoanTerm.getItems().addAll("15", "30");
+		cboxLoanTerm.getSelectionModel().select("15");  
 	}
 	
 	//	DONE - RocketClient.RocketMainController
