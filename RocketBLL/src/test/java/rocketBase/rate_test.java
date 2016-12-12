@@ -29,7 +29,7 @@ public class rate_test {
 	
 	@Test
 	public void TestPayment(){
-		//Asserts the payment matches the given known value. Error delta = ~half a cent
+		//Asserts the payment matches the given known value. Error delta = half a cent
 		assertEquals(RateBLL.getPayment(0.04/12, 360, 300000, 0, false), -1432.25, 0.005);
 	}
 }

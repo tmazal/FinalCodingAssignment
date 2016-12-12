@@ -137,8 +137,13 @@ public class MortgageController {
 			PITI = calc2;
 		
 		roundPITI = (double) Math.round(PITI*100)/100;
+		System.out.println(lRequest.getdPayment());
+		System.out.println(lRequest.getdExpenses());
+		System.out.println(lRequest.getdAmount());
+		System.out.println(lRequest.getdRate());
 		lRequest.setdPayment(roundPITI);
 		
+		//Is PITI replacing payment? Unsure..
 		lblPayment.setText(String.valueOf(roundPITI));
 		
 	}
