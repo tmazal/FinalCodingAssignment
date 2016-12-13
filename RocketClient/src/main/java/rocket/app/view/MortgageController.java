@@ -127,6 +127,7 @@ public class MortgageController {
 		double calc1;
 		double calc2;
 		double roundPITI;
+		double roundPMT = 0;
 		
 		calc1 = lRequest.getdIncome()*0.28;
 		calc2 = lRequest.getdIncome()*0.36 - lRequest.getdExpenses();
