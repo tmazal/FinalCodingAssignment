@@ -108,7 +108,7 @@ public class MortgageController {
 		lq.setiCreditScore(Integer.parseInt(txtCreditScore.getText()));
 		lq.setdAmount(Double.parseDouble(txtHouseCost.getText()));
 		String output = cboxLoanTerm.getSelectionModel().getSelectedItem().toString();
-		lq.setiTerm(Integer.parseInt(output));
+		lq.setiTerm(Integer.parseInt(output)*12);
 		
 		a.setLoanRequest(lq);
 		//	send lq as a message to RocketHub		
@@ -137,14 +137,23 @@ public class MortgageController {
 			PITI = calc2;
 		
 		roundPITI = (double) Math.round(PITI*100)/100;
+		
+		/*
+		System.out.println(lRequest.getdIncome());
 		System.out.println(lRequest.getdPayment());
 		System.out.println(lRequest.getdExpenses());
 		System.out.println(lRequest.getdAmount());
 		System.out.println(lRequest.getdRate());
-		lRequest.setdPayment(roundPITI);
+		System.out.println(lRequest.getiTerm());
+		System.out.println(roundPITI);
+		*/
 		
-		//Is PITI replacing payment? Unsure..
-		lblPayment.setText(String.valueOf(roundPITI));
+		//Not sure if this is proper way to do it, but I am just setting the lower value between
+		//PITI and PMT from getPMT method to be the monthly mortgage payment
+		if (roundPITI < lRequest.getdPayment())
+				lRequest.setdPayment(roundPITI);
+
+		lblPayment.setText(String.valueOf(lRequest.getdPayment()));
 		
 	}
 }

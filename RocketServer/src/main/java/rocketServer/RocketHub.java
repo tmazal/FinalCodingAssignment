@@ -39,7 +39,8 @@ public class RocketHub extends Hub {
 				double payment = 0;
 				rate = RateBLL.getRate(lq.getiCreditScore())/1200;
 				lq.setdRate(rate);
-				payment = RateBLL.getPayment(rate, lq.getiTerm(), lq.getdAmount() - lq.getiDownPayment(), 0, false);
+				//Payment returns negative for some reason.. We can easily fix *-1
+				payment = -1*RateBLL.getPayment(rate, lq.getiTerm(), lq.getdAmount() - lq.getiDownPayment(), 0, false);
 				lq.setdPayment(payment);
 				sendToAll(lq);
 			}
